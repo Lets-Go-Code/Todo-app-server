@@ -1,4 +1,5 @@
-const { Todo,User } = require('../models') 
+const { Todo,User } = require('../models')
+const { hasingPassword, comparePassword } = require('../helper/bycrypt')
 
 const getTodos = async (req,res,next) => {
     try {
@@ -21,10 +22,27 @@ const addTodo = async (req,res,next) => {
 
 const registerUser = async (req,res,next) => {
     const { username, password } = req.body
-    console.log(username,password)
+    const hasingPass = hasingPassword(password)
     try {
-        const data = await User.findAll()
-        res.status(201).json(data)
+        await User.create({username,password:hasingPass})
+        res.status(201).json(`Success register username ${username}`)
+    } catch (err) {
+        res.status(400).json(err.errors[0].message)
+    }
+}
+
+const userLogin = async (req,res,next) => {
+    const {username,password} = req.body
+    try {
+        const founded = await User.findOne({where:{username}})
+        const validPass = comparePassword(password,founded.password)
+        if(!validPass){
+            throw {
+                code : 400,
+                message : "username or password are wrong"
+            }
+        }
+        res.status(200).json("accessToken")
     } catch (err) {
         console.log(err)
     }
@@ -33,5 +51,6 @@ const registerUser = async (req,res,next) => {
 module.exports = {
     getTodos,
     addTodo,
-    registerUser
+    registerUser,
+    userLogin
 }
