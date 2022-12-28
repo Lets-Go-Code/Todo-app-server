@@ -1,6 +1,13 @@
 const route = require('express').Router()
-const { getTodos } = require('../controller')
+const { 
+    getTodos,
+    addTodo,
+    registerUser 
+} = require('../controller')
 
 route.get('/', getTodos)
+route.post('/addTodo', addTodo)
+
+route.post('/register', registerUser)
 
 module.exports = route

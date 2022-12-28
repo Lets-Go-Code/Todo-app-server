@@ -1,3 +1,20 @@
 @baseUrl = http://localhost:3001
+###
+@baseUrlec2 = http://ec2-18-143-63-232.ap-southeast-1.compute.amazonaws.com:3000
 
 GET {{baseUrl}}/ HTTP/1.1
+
+###
+
+POST {{baseUrlec2}}/addTodo HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+
+title=Bengge Epic
+&description=Bengge bermain ml sampai warrior
+
+###
+POST {{baseUrl}}/register HTTP/1.1
+Content-Type: application/x-www-form-urlencoded
+
+username=Bengge
+&password=Okeoke
